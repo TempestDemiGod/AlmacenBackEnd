@@ -1,0 +1,10 @@
+falta 
+Auth de la app -- completado
+integara los token -- completado
+---------------
+
+faltan request de las rutas --
+all Routes
+
+
+

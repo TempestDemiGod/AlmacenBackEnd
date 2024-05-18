@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { AllProducts, AllStores } from "../controllers/public.controller";
+import { AllNameStores, AllProducts, AllProductsByStore, AllStores, infoProduct, infoStore } from "../controllers/public.controller";
 
 const router = Router()
 
 router.get('/allProducts', AllProducts) // todos los productos
-router.get('/allProducts/:id') // get productos de un almacen
-router.get('/infoProduct/:id')
-router.get('/infoStore/:id')
-router.get('/allstores', AllStores)
-router.get('/allNameStores')
+router.get('/allProducts/:id', AllProductsByStore) // get productos de un almacen
+router.get('/infoProduct/:id', infoProduct) // info de un producto
+router.get('/infoStore/:id', infoStore) // info de un almacen
+router.get('/allstores', AllStores) // get de todos los almacenes
+router.get('/allNameStores', AllNameStores) // lista de nombres y id de todos los almacenes
 
 export {router}

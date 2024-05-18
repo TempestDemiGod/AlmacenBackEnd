@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import allRouter from '../routes/main.route'
+import { FRONT_END } from '../config/config'
 
 
 const app = express()
@@ -8,7 +9,7 @@ const app = express()
 app.use(express.json())
 app.use(cors(
     {
-        origin: ['*']
+        origin: ['*', FRONT_END]
     }
 ))
 

@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getAllProducts, getAllStores } from "../services/public/publicRequest"
+import { getAllProducts, getAllProductsByStore, getAllStoreNames, getAllStores, getInfoProduct, getInfoStore } from "../services/public/publicRequest"
 import { responseGlobal } from "../utils/typesGlobal"
 
 
@@ -11,19 +11,22 @@ export const AllProducts = async( _ : Request , res:Response) => {
     res.status(response.status).json(response.data)
 }
 
-export const AllProductsByStore = async( _ : Request , res:Response) => {
-    const response: responseGlobal = await getAllProducts()
+export const AllProductsByStore = async( req : Request , res:Response) => {
+    const {id} = req.params
+    const response: responseGlobal = await getAllProductsByStore(id)
     res.status(response.status).json(response.data)
 }
 
-export const infoProduct = async( _ : Request , res:Response) => {
-    // const response: responseGlobal = await getAllStores()
-    res.status(32123).json('das')
+export const infoProduct = async( req : Request , res:Response) => {
+    const {id} = req.params
+    const response: responseGlobal = await getInfoProduct(id)
+    res.status(response.status).json(response.data)
 }
 
-export const infoAlmacen = async( _ : Request , res:Response) => {
-    // const response: responseGlobal = await getAllStores()
-    res.status(32123).json('das')
+export const infoStore = async( req : Request , res:Response) => {
+    const {id} = req.params
+    const response: responseGlobal = await getInfoStore(id)
+    res.status(response.status).json(response.data)
 }
 
 export const AllStores = async( _ : Request , res:Response) => {
@@ -32,6 +35,6 @@ export const AllStores = async( _ : Request , res:Response) => {
 }
 
 export const AllNameStores = async( _ : Request , res:Response) => {
-    // const response: responseGlobal = await getAllStores()
-    res.status(32123).json('das')
+    const response: responseGlobal = await getAllStoreNames()
+    res.status(response.status).json(response.data)
 }

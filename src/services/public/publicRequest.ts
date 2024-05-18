@@ -19,13 +19,17 @@ export const getAllProducts = async(): Promise< Product[] | any > => {
     }
 }
 
-export const getAllProductsByStore = async(id: string): Promise< Product[] | any > => {
+export const getAllProductsByStore = async(id: (string | any)): Promise< Product[] | any > => {
     try {
-        const store = await productModel.findById(id).populate('listProducts')
-        // const allProducts = store?.listProducts 
+        const store = await storeModel.findById(id).populate('listProducts')
+        if(!store) return {
+            status: 404,
+            data: 'Store not found'
+        }
+        const allProducts = store.listProducts
         return {
             status: 200,
-            data: store
+            data: allProducts
         }
     } catch (error) {
         console.log(error)
@@ -36,7 +40,7 @@ export const getAllProductsByStore = async(id: string): Promise< Product[] | any
     }
 }
 
-export const infoProduct = async(id: string) => {
+export const getInfoProduct = async(id: (string | any)) => {
     try {
         const product = await productModel.findById(id)
         if(!product) return {
@@ -56,7 +60,7 @@ export const infoProduct = async(id: string) => {
     }
 } 
 
-export const infoStore = async(id: string) => {
+export const getInfoStore = async(id: (string | any)) => {
     try {
         const store = await storeModel.findById(id)
         if(!store) return {
@@ -92,7 +96,7 @@ export const getAllStores = async(): Promise< Product[] | any > => {
     }
 }
 
-export const allStoreNames = async() => {
+export const getAllStoreNames = async() => {
     try {
         const allStore = await storeModel.find()
         if(!allStore) return {

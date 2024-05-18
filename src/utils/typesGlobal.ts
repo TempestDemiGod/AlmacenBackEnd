@@ -1,7 +1,8 @@
+import { Request } from "express"
 
 export type responseGlobal = {
     status: number,
-    data: object
+    data: object | any
 }
 
 export type responseStore = {
@@ -15,3 +16,12 @@ export type responseStore = {
     updatedAt: string | Date,
     __v: number
   }
+
+export interface RequestExt extends Request{
+    headers: {
+        token : string
+    },
+    user: string
+ }
+
+ 
