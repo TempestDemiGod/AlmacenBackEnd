@@ -2,21 +2,33 @@ import { CredentialUsers } from "../../interfaces/credentials.interface"
 import { ResponseUser, User } from "../../interfaces/user.interface"
 import clientModel from "../../model/client.model"
 import userModel from "../../model/user.model"
+import { comparePass, encryptPass } from "../../utils/bcrypt"
 import { createToken } from "../../utils/jwt"
 import { responseGlobal } from "../../utils/typesGlobal"
 
 export const signUp = async(data: User, typeUser: string):Promise<responseGlobal> => {
     try {
         let token
-        const {email} = data
+        const {email,lastName,name,password} = data
         if(typeUser === 'user'){
             const UserFound = await userModel.findOne({email})
             if(UserFound) return {
                 status: 400,
                 data: 'User already exists'
             }
-            const newUser = new userModel(data)
-            const saveUser: ResponseUser = newUser.save() as any
+            const ClientFound = await clientModel.findOne({email})
+            if(ClientFound) return {
+                status: 400,
+                data: 'User already exists'
+            }
+            const newPass = await encryptPass(password)
+            const newUser = new userModel({
+                email,
+                lastName,
+                name,
+                password: newPass
+            })
+            const saveUser: ResponseUser = await newUser.save() as any
             token = await createToken({id: saveUser._id})
         }else if(typeUser === 'client'){
             const ClientFound = await clientModel.findOne({email})
@@ -29,8 +41,14 @@ export const signUp = async(data: User, typeUser: string):Promise<responseGlobal
                 status: 400,
                 data: 'Client already exists'
             }
-            const newClient = new clientModel(data)
-            const saveClient: ResponseUser = newClient.save() as any
+            const newPass = await encryptPass(password)
+            const newClient = new clientModel({
+                email,
+                lastName,
+                name,
+                password: newPass
+            })
+            const saveClient: ResponseUser = await newClient.save() as any
             token = await createToken({id: saveClient._id})
         }
         return {
@@ -56,8 +74,8 @@ export const signIn = async(data: CredentialUsers):Promise<responseGlobal> => {
                 data: 'incorrect credentials'
             }
         }
-        
-        const matchPass = password
+        const passUser = User.password
+        const matchPass = await comparePass(password, passUser)
         if(!matchPass) return {
             status: 400,
             data: 'incorrect credentials'
