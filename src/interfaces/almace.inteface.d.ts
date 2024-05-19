@@ -9,10 +9,6 @@ export interface NewAlmacen extends basicAlmacen{
     country: string
 }
 
-export interface updateAlmacen extends basicAlmacen{
-    id: string
-}
-
 export interface basicAlmacen{
     storeName: string
     region: string

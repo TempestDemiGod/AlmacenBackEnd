@@ -23,8 +23,7 @@ const storeSchema = new Schema<Almacen>(
         listProducts: [
             {
                 type: Schema.Types.ObjectId,
-                ref: 'Product',
-                required: true
+                ref: 'Product'
             }
         ]
     },

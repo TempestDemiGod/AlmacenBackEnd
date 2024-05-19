@@ -7,4 +7,4 @@ faltan request de las rutas --
 all Routes
 
 
-
+is necesary upload image or file
