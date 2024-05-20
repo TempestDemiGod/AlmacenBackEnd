@@ -1,4 +1,5 @@
 import clientModel from "../../model/client.model"
+import productModel from "../../model/product.model"
 
 export const getShoppingCart = async(id: string) => {
     try {
@@ -59,3 +60,83 @@ export const getFavoriteProducts = async(id: string) => {
         }
     }
 }
+
+export const addProductShoppingCart = async(idUser: string ,id: string, uUnit: number) => {
+    try {
+        const UserFound = await clientModel.findById(idUser) 
+        if(!UserFound) return {
+            status: 404,
+            data: 'user not found'
+        }
+        const product = await productModel.findById(id)
+        if(!product) return {
+            status: 404,
+            data: 'product not found'
+        }
+        const newProductInCart = {
+            uUnit,
+            product
+        }
+        UserFound.shoppingCart.push(newProductInCart)
+        const addProduct = await UserFound.save()
+        return {
+            status: 201,
+            data: addProduct
+        }
+    } catch (error) {
+        return {
+            status: 500,
+            data: error
+        }
+    }
+} 
+
+export const addProductFavoriteList = async(idUser: string ,id: string) => {
+    try {
+        const UserFound = await clientModel.findById(idUser) 
+        if(!UserFound) return {
+            status: 404,
+            data: 'user not found'
+        }
+        const product = await productModel.findById(id)
+        if(!product) return {
+            status: 404,
+            data: 'product not found'
+        }
+        UserFound.favoriteProducts.push(product)
+        const addProduct = await UserFound.save()
+        return {
+            status: 201,
+            data: addProduct
+        }
+    } catch (error) {
+        return {
+            status: 500,
+            data: error
+        }
+    }
+} 
+
+export const delProductShoppingCart = async(idUser: string ,_products: string[]) => {
+    try {
+        const UserFound = await clientModel.findById(idUser).populate('shoppingCart')
+        if(!UserFound) return {
+            status: 404,
+            data: 'user not found'
+        }
+        // UserFound.shoppingCart.map(item => {
+            
+        // })
+        const addProduct = await UserFound.save()
+        return {
+            status: 201,
+            data: addProduct
+        }
+    } catch (error) {
+        return {
+            status: 500,
+            data: error
+        }
+    }
+} 
+

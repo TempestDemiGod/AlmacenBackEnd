@@ -22,7 +22,7 @@ const clientSchema = new Schema<Client>(
         shoppingCart: [
             {
                 uUnit: {
-                    type: String,
+                    type: Number,
                     required: true
                 },
                 product: {

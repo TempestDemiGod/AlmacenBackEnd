@@ -21,8 +21,7 @@ const productSchema = new Schema<Product>(
             required: true
         },
         originStore: {
-            type: Schema.Types.ObjectId,
-            ref: 'Store',
+            type: String,
             required: true
         },
         nSales: {

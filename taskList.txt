@@ -4,7 +4,7 @@ integara los token -- completado
 ---------------
 
 faltan request de las rutas --
-all Routes
+client and user(graphs)
 
 
-is necesary upload image or file
+is necesary upload image or file in route of create product

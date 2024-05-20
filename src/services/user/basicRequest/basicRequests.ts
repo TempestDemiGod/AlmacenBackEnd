@@ -48,7 +48,7 @@ export const getAllClients = async(): Promise< User[] | any > => {
 export const postNewStore = async(Data : NewAlmacen): Promise< Almacen | any > => {
     try {
         const newStore = new StoreModel(Data)
-        const saveStore = newStore.save()
+        const saveStore = await newStore.save()
         return {
             status: 201,
             data: saveStore
@@ -90,7 +90,7 @@ export const postNewProduct = async(Data : NewProduct, id: string): Promise< Pro
             price,
             nUnit,
             creatorUser: matchUser,
-            originStore: matchStore,
+            originStore: TheOriginStore,
             imageProduct
         })
         matchStore.listProducts.push(newProduct)
@@ -136,17 +136,17 @@ export const putUpdateStore = async(Data : basicAlmacen, id: string): Promise< a
 
 export const putUpdateProduct = async(Data : BasicProduct, id: string): Promise< any > => {
     try {
-        const updateStore = await StoreModel.findByIdAndUpdate(id, Data ,{
+        const updateProduct = await productModel.findByIdAndUpdate(id, Data ,{
             new: true
         })
-        if(!updateStore) return {
+        if(!updateProduct) return {
             status: 404,
-            data: 'The Store does not Exist'
+            data: 'The Product does not Exist'
         }
 
         return {
             status: 201,
-            data: 'updateStore'
+            data: 'updateProduct'
         }
     } catch (error) {
         console.log(error)
@@ -161,7 +161,7 @@ export const putUpdateProduct = async(Data : BasicProduct, id: string): Promise<
 
 export const serviceDeleteStore = async(id: string): Promise< any > => {
     try {
-        const store = await storeModel.findById(id)
+        const store = await storeModel.findById(id).populate('listProducts')
         if(!store) return {
             status: 404,
             data: 'The Store does not Exist'
@@ -188,13 +188,18 @@ export const serviceDeleteStore = async(id: string): Promise< any > => {
 
 export const serviceDeleteProduct = async(id: string): Promise< any > => {
     try {
-        const Product = await productModel.findById(id)
+        const Product = await productModel.findByIdAndDelete(id)
         if(!Product) return {
             status: 404,
             data: 'The Product does not Exist'
         }
-        const idStore = Product?._id
-        await productModel.findByIdAndDelete(idStore)
+        const IDstore = Product.originStore 
+        const StoreFound = await StoreModel.findById(IDstore)
+        const listProducts = StoreFound?.listProducts
+        const idProduct = id as any
+        const index = listProducts?.indexOf(idProduct) as number
+        listProducts?.splice(index, 1)
+        await StoreFound?.save()
         return {
             status: 204,
             data: 'The Product was successfully deleted'

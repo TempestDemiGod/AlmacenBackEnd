@@ -11,7 +11,7 @@ router.get('/favoriteProducts', AuthVerify, validatorClient, favoriteProducts) /
 
 router.post('/productShoppingCart/:id', AuthVerify, validatorClient) // agregar un producto al carrito de compras
 // router.post('/productPurchaseHistory', AuthVerify, validatorClient) // agregar productos al historial de compra ...--- no se si agregarlo a buyProducts
-router.post('/favoriteProduct/id', AuthVerify, validatorClient) // agregar producto a favoritos
+router.post('/favoriteProduct/:id', AuthVerify, validatorClient) // agregar producto a favoritos
 
 router.delete('/productsShoppingCart', AuthVerify, validatorClient) // eliminar productos del carrito de compra
 // router.delete('/productsPurchaseHistory', AuthVerify, validatorClient) -- no se si hacer este

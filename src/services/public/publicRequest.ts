@@ -62,7 +62,7 @@ export const getInfoProduct = async(id: (string | any)) => {
 
 export const getInfoStore = async(id: (string | any)) => {
     try {
-        const store = await storeModel.findById(id)
+        const store = await storeModel.findById(id).populate('listProducts')
         if(!store) return {
             status: 404,
             data: 'Store Not Found'
