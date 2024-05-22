@@ -1,5 +1,5 @@
 import { Router} from "express";
-import { AllClients, AllUsers, NewProduct, NewStore, UpdateProduct, UpdateStore, deleteProduct, deleteStore } from "../controllers/user.controller";
+import { AllClients, AllUsers, NewProduct, NewStore, UpdateProduct, UpdateStore, deleteProduct, deleteStore, graphSalesByProduct, graphSalesByStore, graphStoreByCountry, graphStoreByRegion } from "../controllers/user.controller";
 import { AuthVerify } from "../middleware/auth.middleware";
 import { validatorAdmin } from "../middleware/validatorAdmin.middleware";
 import { validateCourseSchema } from "../middleware/validatorSchema.middleware";
@@ -22,9 +22,9 @@ router.delete('/store/:id', AuthVerify,validatorAdmin, deleteStore) // eliminar 
 router.delete('/product/:id', AuthVerify,validatorAdmin, deleteProduct) // eliminar un producto
 
 // GRAPH REQUESTS
-router.get('/graphStoreByCountry', AuthVerify,validatorAdmin) // grafico de almacenes por pais
-router.get('/graphStoreByRegion', AuthVerify,validatorAdmin) // grafico de almacenes por region
-router.get('/graphSalesByProduct', AuthVerify,validatorAdmin) // grafico de productos mas vendidos
-router.get('/graphSalesByStore', AuthVerify,validatorAdmin) // grafico de almacenes con mas ventas
+router.get('/graphStoreByCountry', AuthVerify,validatorAdmin,graphStoreByCountry) // grafico de almacenes por pais
+router.get('/graphStoreByRegion', AuthVerify,validatorAdmin,graphStoreByRegion) // grafico de almacenes por region
+router.get('/graphSalesByProduct', AuthVerify,validatorAdmin,graphSalesByProduct) // grafico de productos mas vendidos
+router.get('/graphSalesByStore', AuthVerify,validatorAdmin,graphSalesByStore) // grafico de almacenes con mas ventas
 
 export {router}

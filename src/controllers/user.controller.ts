@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getAllClients, getAllUsers, postNewProduct, postNewStore, putUpdateProduct, putUpdateStore, serviceDeleteProduct, serviceDeleteStore } from "../services/user/basicRequest/basicRequests";
 import { RequestExt, responseGlobal } from "../utils/typesGlobal";
+import { getGetGraphSalesByStore, getGraphSalesByProduct, getGraphStoreByCountry, getGraphStoreByRegion } from "../services/user/graphRequest/graphRequest";
 
 // BASIC REQUEST
 // GETS
@@ -63,3 +64,22 @@ export const deleteProduct = async(req : Request , res:Response) => {
 
 // GRAPH REQUESTS
 
+export const graphStoreByCountry = async(_ : Request , res:Response) => {
+    const response: responseGlobal = await getGraphStoreByCountry()
+    res.status(response.status).json(response.data)
+}
+
+export const graphStoreByRegion = async(_ : Request , res:Response) => {
+    const response: responseGlobal = await getGraphStoreByRegion()
+    res.status(response.status).json(response.data)
+}
+
+export const graphSalesByProduct = async(_ : Request , res:Response) => {
+    const response: responseGlobal = await getGraphSalesByProduct()
+    res.status(response.status).json(response.data)
+}
+
+export const graphSalesByStore = async(_ : Request , res:Response) => {
+    const response: responseGlobal = await getGetGraphSalesByStore()
+    res.status(response.status).json(response.data)
+}
