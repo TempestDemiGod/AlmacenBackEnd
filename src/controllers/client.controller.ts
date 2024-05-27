@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { RequestExt, responseGlobal } from "../utils/typesGlobal"
-import { addProductFavoriteList, addProductShoppingCart, getFavoriteProducts, getPurchaseHistory, getShoppingCart } from "../services/client/client"
+import { addProductFavoriteList, addProductShoppingCart, delFavoriteProducts, delProductShoppingCart, getFavoriteProducts, getPurchaseHistory, getShoppingCart } from "../services/client/client"
 
 // Client Requests
 // GETS
@@ -37,7 +37,7 @@ export const productShoppingCart = async(req : Request , res:Response) => {
     res.status(response.status).json(response.data)
 }
 
-export const favoriteProduc = async(req : Request , res:Response) => {
+export const favoriteProduct = async(req : Request , res:Response) => {
     const {id} = req.params
     const _req = req as RequestExt
     const idUser = _req.user
@@ -55,10 +55,14 @@ export const deleteProductsShoppingCart = async(req : Request , res:Response) =>
     const {products} = req.body 
     const _req = req as RequestExt
     const idUser = _req.user
-    const response: responseGlobal = await addProductFavoriteList(idUser, products)
+    const response: responseGlobal = await delProductShoppingCart(idUser, products)
     res.status(response.status).json(response.data)
 }
 
-export const deleteFavoriteProducts = () => {
-
+export const deleteFavoriteProducts = async(req : Request , res:Response) => {
+    const {products} = req.body 
+    const _req = req as RequestExt
+    const idUser = _req.user
+    const response: responseGlobal = await delFavoriteProducts(idUser, products)
+    res.status(response.status).json(response.data)
 }
