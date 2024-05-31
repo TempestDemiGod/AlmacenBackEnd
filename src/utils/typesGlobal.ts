@@ -1,4 +1,5 @@
 import { Request } from "express"
+import fileUpload from "express-fileupload"
 
 export type responseGlobal = {
     status: number,
@@ -24,4 +25,14 @@ export interface RequestExt extends Request{
     user: string
  }
 
- 
+ export type UploadedFile = fileUpload.UploadedFile;
+
+ export type ImgData = {
+    name: string,
+    data: object
+ }
+
+ export type ImageResponse = {
+    public_id : string,
+    secure_url: string
+ }

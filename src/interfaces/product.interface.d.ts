@@ -4,7 +4,7 @@ export interface Product extends BasicProduct{
     creatorUser: ObjectId
     originStore: ObjectId
     nSales: number
-    imageProduct: object
+    imageProduct: ImageProduct
 }
 export interface NewProduct extends BasicProduct{
     TheOriginStore: string

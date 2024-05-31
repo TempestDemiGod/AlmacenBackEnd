@@ -1,5 +1,7 @@
 import clientModel from "../../model/client.model"
 import productModel from "../../model/product.model"
+import { deleteImage, uploadImage } from "../../utils/cloudinary"
+import { ImageResponse, UploadedFile } from "../../utils/typesGlobal"
 
 export const getShoppingCart = async(id: string) => {
     try {
@@ -191,3 +193,66 @@ export const delFavoriteProducts = async(idUser: string ,products: string[]) => 
         }
     }
 } 
+
+export const postBuyProducts = async(idUser: string ,products: string[]) => {
+    try {
+        const clientFound = await clientModel.findById(idUser).populate('shoppingCart')
+        if(!clientFound) return {
+            status: 404,
+            data: 'client not found'
+        }
+        if(!products) return {
+            status: 400,
+            data: 'list products for delete is required'
+        }
+        if(products.length === 0) return {
+            status: 400,
+            data: 'list products length for delete is 0 '
+        }
+        const favoriteList = clientFound.favoriteProducts
+        products.map(item => {
+            const indexProduct = favoriteList.indexOf(item)
+            if(indexProduct !== -1){
+                clientFound.favoriteProducts.splice(indexProduct,1)
+            }
+        })
+        const deleteProducts = await clientFound.save()
+        return {
+            status: 201,
+            data: deleteProducts
+        }
+    } catch (error) {
+        return {
+            status: 500,
+            data: error
+        }
+    }
+} 
+
+// avatar request
+
+export async function avatarRequest(avatar: UploadedFile | UploadedFile[]| undefined, id: string){
+    try {
+        const Client = await clientModel.findById(id)
+        if(!Client) return {
+            status: 404,
+            data: 'client not exist'
+        }
+        if(Client?.imageUser.image_id){
+            await deleteImage(Client.imageUser.image_id) 
+        }
+        const avatarUpdate: ImageResponse  = await uploadImage(avatar, 'client') as ImageResponse
+        Client.imageUser.image_id = avatarUpdate.public_id
+        Client.imageUser.image_url = avatarUpdate.secure_url
+        await Client.save()
+        return {
+            status: 200,
+            data: 'avatar successfully updated'
+        }
+    } catch (error) {
+        return {
+            status: 500,
+            data: error
+        }
+    }
+}

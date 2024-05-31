@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { RequestExt, responseGlobal } from "../utils/typesGlobal"
-import { addProductFavoriteList, addProductShoppingCart, delFavoriteProducts, delProductShoppingCart, getFavoriteProducts, getPurchaseHistory, getShoppingCart } from "../services/client/client"
+import { addProductFavoriteList, addProductShoppingCart, avatarRequest, delFavoriteProducts, delProductShoppingCart, getFavoriteProducts, getPurchaseHistory, getShoppingCart, postBuyProducts } from "../services/client/client"
 
 // Client Requests
 // GETS
@@ -45,10 +45,6 @@ export const favoriteProduct = async(req : Request , res:Response) => {
     res.status(response.status).json(response.data)
 }
 
-export const buyProducts = () => {
-
-}
-
 // DELETE
 
 export const deleteProductsShoppingCart = async(req : Request , res:Response) => {
@@ -64,5 +60,23 @@ export const deleteFavoriteProducts = async(req : Request , res:Response) => {
     const _req = req as RequestExt
     const idUser = _req.user
     const response: responseGlobal = await delFavoriteProducts(idUser, products)
+    res.status(response.status).json(response.data)
+}
+
+export const buyProducts = async(req : Request , res:Response) => {
+    const {products} = req.body 
+    const _req = req as RequestExt
+    const idUser = _req.user
+    const response: responseGlobal = await postBuyProducts(idUser, products)
+    res.status(response.status).json(response.data)
+}
+
+// update avatar
+
+export const putAvatar = async(req : Request , res:Response) => {
+    const image = req.files?.image
+    const _req = req as RequestExt
+    const idUser = _req.user
+    const response: responseGlobal = await avatarRequest(image, idUser)
     res.status(response.status).json(response.data)
 }

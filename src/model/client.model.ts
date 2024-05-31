@@ -36,7 +36,7 @@ const clientSchema = new Schema<Client>(
             {
                 products: [
                     {
-                        nameProducts: String,
+                        nameProducts: [String],
                         nUnit: Number,
                         price: Number
                     }

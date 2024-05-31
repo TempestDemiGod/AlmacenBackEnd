@@ -6,5 +6,11 @@ export interface Client extends User{
     shoppingCart: Object[]
     purchaseHistory: Object[]
     favoriteProducts: Object[]
-    imageUser: object
+    imageUser: imageUser
 }
+
+export type imageUser = {
+    image_id: string,
+    image_url: string
+}
+
