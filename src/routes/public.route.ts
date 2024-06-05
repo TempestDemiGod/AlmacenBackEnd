@@ -10,4 +10,8 @@ router.get('/infoStore/:id', infoStore) // info de un almacen
 router.get('/allstores', AllStores) // get de todos los almacenes
 router.get('/allNameStores', AllNameStores) // lista de nombres y id de todos los almacenes
 
+router.get('/hola',(_req,res)=>{
+    res.status(200).json({hola: 'saludo'})
+})
+
 export {router}
